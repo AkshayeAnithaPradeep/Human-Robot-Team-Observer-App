@@ -1,11 +1,11 @@
 import {createStackNavigator, createAppContainer} from 'react-navigation';
-import  MenuScreen from './MenuScreen';
-import SetupScreen from './SetupScreen';
-import PreMissionScreen from './PreMissionScreen';
-import MissionExecutionScreen from './MissionExecutionScreen';
-import PostMissionScreen from './PostMissionScreen';
-import SummaryScreen from './SummaryScreen';
-import LibraryScreen from './LibraryScreen';
+import  MenuScreen from './screens/MenuScreen';
+import SetupScreen from './screens/SetupScreen';
+import PreMissionScreen from './screens/PreMissionScreen';
+import MissionExecutionScreen from './screens/MissionExecutionScreen';
+import PostMissionScreen from './screens/PostMissionScreen';
+import SummaryScreen from './screens/SummaryScreen';
+import LibraryScreen from './screens/LibraryScreen';
 
 const RootStack = createStackNavigator({
     Home: {screen: MenuScreen},
