@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "MissionLogs",
-    "slug": "MissionLogs",
+    "name": "Human Robot Team Observer",
+    "slug": "HRTO",
     "privacy": "public",
     "sdkVersion": "31.0.0",
     "platforms": [

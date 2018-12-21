@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, ScrollView, StyleSheet, View, Button } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import StickyFooter from './subviews/StickyFooter';
 
 var t = require('tcomb-form-native');
@@ -48,18 +48,42 @@ const options = {
     }
 };
 
+let gridVals = {
+    premission: [],
+    mission: [],
+    postmission: []
+};
+
 export default class SetupScreen extends Component {
     static navigationOptions = {
         title: 'Setup',
     };
+    constructor(props) {
+        super(props);
+        this.state =  {
+                value: {
+                    sessionName: 'Giulio',
+                    missionName: 'Canti',
+                    role_1: {
+                        title: 'Pilot',
+                        name: 'Akshaye',
+                        abbreviation: 'AP'
+
+                    }
+                }
+        };
+    }
+
+    onChange(value) {
+        this.setState({value});
+    }
     _onCancelPressButton() {
         this.props.navigation.navigate("Home");
     }
     _onProceedPressButton() {
         let value = this.refs.form.getValue();
         if (value) { // if validation fails, value will be null
-            console.log(value); // value here is an instance of Person
-            this.props.navigation.navigate("PreMission", {setupData: value});
+            this.props.navigation.navigate("PreMission", {setupData: value, gridVals: gridVals});
         }
     }
     render() {
@@ -70,6 +94,8 @@ export default class SetupScreen extends Component {
                         ref="form"
                         type={Session}
                         options={options}
+                        value={this.state.value}
+                        onChange={this.onChange.bind(this)}
                     />
                 </ScrollView>
                 <StickyFooter cancelFunc = {this._onCancelPressButton.bind(this)} proceedFunc = {this._onProceedPressButton.bind(this)}/>
