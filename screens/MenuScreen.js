@@ -6,6 +6,11 @@ export default class MenuScreen extends Component {
         title: 'Menu',
     };
     render() {
+        let gridVals = {
+            premission: [],
+            mission: [],
+            postmission: []
+        };
         const {navigate} = this.props.navigation;
         return (
             <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', padding: 10}}>
@@ -18,7 +23,7 @@ export default class MenuScreen extends Component {
                 <View style={{padding: 5}}>
                     <Button
                         title="Resume Session"
-                        onPress={() => navigate('Setup')}
+                        onPress={() => navigate('Setup', {gridVals: gridVals})}
                     />
                 </View>
                 <View style={{padding: 5}}>

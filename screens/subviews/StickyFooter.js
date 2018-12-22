@@ -2,14 +2,21 @@ import React, { Component } from 'react';
 import {Button, StyleSheet, View} from 'react-native';
 
 export default class StickyFooter extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            backTitle: this.props.backVal ? this.props.backVal : "Back",
+            proceedTitle: this.props.proceedVal ? this.props.proceedVal : "Proceed"
+        }
+    }
     render() {
         return (
             <View style={styles.stickyFooter}>
                 <View style={styles.buttonContainer}>
-                    <Button title="Back" onPress={this.props.cancelFunc}/>
+                    <Button title={this.state.backTitle} onPress={this.props.cancelFunc}/>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <Button title="Proceed" onPress={this.props.proceedFunc}/>
+                    <Button title={this.state.proceedTitle} onPress={this.props.proceedFunc}/>
                 </View>
             </View>
         );

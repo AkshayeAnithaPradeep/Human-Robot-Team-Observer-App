@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {AsyncStorage, ScrollView, StyleSheet, Text, View} from 'react-native';
 import StickyFooter from "./subviews/StickyFooter";
 import Grid from "./subviews/Grid";
 import TableCell from "./subviews/TableCell";
@@ -45,16 +45,33 @@ export default class PostMissionScreen extends Component {
     _onGridCellPress(i,j) {
         let gridVals = this.state.gridVals;
         gridVals[i][j] += 1;
-        this.setState(prevState => ({
-            gridVals: [...prevState.gridVals, gridVals]
-        }))
+        let data = this.state.data;
+        AsyncStorage.getItem(data.missionName + '-' + data.sessionName, (err, result) => {
+            result = JSON.parse(result);
+            if(result && result.timeStamps) {
+                let newTimeStamps = result.timeStamps.slice();
+                let temp = {
+                    timeStamp: new Date().getTime(),
+                    step: 'postmission',
+                    event: i,
+                    role: j
+                };
+                newTimeStamps.push(temp);
+                result.timeStamps = newTimeStamps;
+                AsyncStorage.mergeItem(data.missionName + '-' + data.sessionName, JSON.stringify(result), () => {
+                    this.setState(prevState => ({
+                        gridVals: [...prevState.gridVals, gridVals]
+                    }));
+                });
+            }
+        });
     }
 
     _onCancelPressButton() {
         this.props.navigation.navigate("MissionExecution");
     }
     _onProceedPressButton() {
-        this.props.navigation.navigate("Summary");
+        this.props.navigation.navigate("Summary", {setupData: this.navParams.setupData});
     }
     render() {
         return (

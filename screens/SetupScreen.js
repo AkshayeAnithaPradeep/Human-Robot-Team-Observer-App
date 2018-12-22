@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import StickyFooter from './subviews/StickyFooter';
-
+import { AsyncStorage } from "react-native";
 var t = require('tcomb-form-native');
 
 var Form = t.form.Form;
@@ -48,16 +48,11 @@ const options = {
     }
 };
 
-let gridVals = {
-    premission: [],
-    mission: [],
-    postmission: []
-};
-
 export default class SetupScreen extends Component {
     static navigationOptions = {
         title: 'Setup',
     };
+    navParams = this.props.navigation.state.params;
     constructor(props) {
         super(props);
         this.state =  {
@@ -83,6 +78,26 @@ export default class SetupScreen extends Component {
     _onProceedPressButton() {
         let value = this.refs.form.getValue();
         if (value) { // if validation fails, value will be null
+            let temp = {
+                timeStamp: new Date().getTime(),
+                step: 'setup',
+                event: 0,
+                role: 0
+            };
+            let value_json = JSON.stringify(value);
+            let value_obj = JSON.parse(value_json);
+            value_obj["timeStamps"] = [temp];
+            value_json = JSON.stringify(value_obj);
+            AsyncStorage.setItem(value.missionName + '-' + value.sessionName, value_json, () => {
+                AsyncStorage.getItem(value.missionName + '-' + value.sessionName, (err, result) => {
+                    console.log(result);
+                });
+            });
+            let gridVals = {
+                premission: [],
+                mission: [],
+                postmission: []
+            };
             this.props.navigation.navigate("PreMission", {setupData: value, gridVals: gridVals});
         }
     }
