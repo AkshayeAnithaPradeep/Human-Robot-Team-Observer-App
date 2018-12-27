@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {AsyncStorage, ScrollView, StyleSheet, View} from 'react-native';
+import { Icon } from 'react-native-elements';
 import StickyFooter from "./subviews/StickyFooter";
 import Grid from "./subviews/Grid";
 import TableCell from "./subviews/TableCell";
@@ -7,6 +8,7 @@ import TableCell from "./subviews/TableCell";
 export default class PreMissionScreen extends Component {
 
     navParams = this.props.navigation.state.params;
+    last_pressed = [];
 
     constructor(props) {
         super(props);
@@ -38,13 +40,37 @@ export default class PreMissionScreen extends Component {
         };
         this._onGridCellPress = this._onGridCellPress.bind(this);
     }
-    static navigationOptions = {
-        title: 'Pre Mission',
+
+    componentDidMount() {
+        this.props.navigation.setParams({ _onUndoPressButton: this._onUndoPressButton.bind(this) });
+    }
+
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: 'Pre Mission',
+            headerRight: (
+                <View style={{paddingRight: 5}}>
+                    <Icon
+                        raised
+                        name='undo'
+                        type='material-community'
+                        size={20}
+                        color='black'
+                        underlayColor='blue'
+                        onPress={navigation.getParam('_onUndoPressButton')}
+                    />
+                </View>
+            )
+        }
     };
 
     _onGridCellPress(i,j) {
         let gridVals = this.state.gridVals;
         gridVals[i][j] += 1;
+        this.last_pressed.push({
+            x: i,
+            y: j
+        });
         let data = this.state.data;
         AsyncStorage.getItem(data.missionName + '-' + data.sessionName, (err, result) => {
             result = JSON.parse(result);
@@ -73,6 +99,29 @@ export default class PreMissionScreen extends Component {
     _onProceedPressButton() {
         this.props.navigation.navigate("MissionExecution", {setupData: this.navParams.setupData, gridVals: this.navParams.gridVals});
     }
+
+    _onUndoPressButton() {
+        let lastPressed = this.last_pressed.pop();
+        if(lastPressed) {
+            let gridVals = this.state.gridVals;
+            gridVals[lastPressed.x][lastPressed.y] -= 1;
+            let data = this.state.data;
+            AsyncStorage.getItem(data.missionName + '-' + data.sessionName, (err, result) => {
+                result = JSON.parse(result);
+                if (result && result.timeStamps) {
+                    let newTimeStamps = result.timeStamps.slice();
+                    newTimeStamps.pop();
+                    result.timeStamps = newTimeStamps;
+                    AsyncStorage.mergeItem(data.missionName + '-' + data.sessionName, JSON.stringify(result), () => {
+                        this.setState(prevState => ({
+                            gridVals: [...prevState.gridVals, gridVals]
+                        }));
+                    });
+                }
+            });
+        }
+    }
+
     render() {
         return (
             <View style = {{flex: 1}}>
@@ -102,5 +151,10 @@ export default class PreMissionScreen extends Component {
 let styles = StyleSheet.create({
     formContainer: {
         flex: .8
+    },
+    undoButton: {
+        paddingRight: 5
     }
 });
+
+
