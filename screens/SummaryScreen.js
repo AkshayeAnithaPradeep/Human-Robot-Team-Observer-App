@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {AsyncStorage, Text, View, ScrollView, StyleSheet} from 'react-native';
+import {AsyncStorage, Text, View, ScrollView, StyleSheet, Share} from 'react-native';
 import TableCell from "./subviews/TableCell";
 import StickyFooter from "./subviews/StickyFooter";
 
@@ -8,6 +8,7 @@ const rowVals = ['distracted', 'slips', 'mistakes', 'confused/hesitant', 'asked 
 export default class SummaryScreen extends Component {
 
     navParams = this.props.navigation.state.params;
+    jsonStringData = null;
 
     constructor(props) {
         super(props);
@@ -16,6 +17,7 @@ export default class SummaryScreen extends Component {
     componentDidMount() {
         let data = this.navParams.setupData;
         AsyncStorage.getItem(data.missionName + '-' + data.sessionName, (err, result) => {
+            this.jsonStringData = result;
             result = JSON.parse(result);
             this.setState(previousState => ({
                     data: result
@@ -28,7 +30,13 @@ export default class SummaryScreen extends Component {
     };
 
     _onCancelPressButton() {
-        this.props.navigation.navigate("Home");
+        Share.share({
+            message: this.jsonStringData,
+            title: this.state.data.missionName + '-' + this.state.data.sessionName + ' Result'
+        }, {
+            // Android only:
+            dialogTitle: 'Share Mission Result'
+        })
     }
     _onProceedPressButton() {
         this.props.navigation.navigate("Home");
