@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
-import { Button, StyleSheet, View } from 'react-native';
+import { Button, StyleSheet, View, AsyncStorage} from 'react-native';
 
 export default class MenuScreen extends Component {
     static navigationOptions = {
         title: 'Menu',
     };
+
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         let gridVals = {
             premission: [],

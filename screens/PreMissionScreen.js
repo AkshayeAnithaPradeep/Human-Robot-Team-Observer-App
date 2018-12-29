@@ -72,10 +72,11 @@ export default class PreMissionScreen extends Component {
             y: j
         });
         let data = this.state.data;
+        let sortieName = data.sortieName;
         AsyncStorage.getItem(data.missionName + '-' + data.sessionName, (err, result) => {
             result = JSON.parse(result);
-            if(result && result.timeStamps) {
-                let newTimeStamps = result.timeStamps.slice();
+            if(result && result.sorties[sortieName].timeStamps) {
+                let newTimeStamps = result.sorties[sortieName].timeStamps.slice();
                 let temp = {
                     timeStamp: new Date().getTime(),
                     step: 'premission',
@@ -83,7 +84,7 @@ export default class PreMissionScreen extends Component {
                     role: j
                 };
                 newTimeStamps.push(temp);
-                result.timeStamps = newTimeStamps;
+                result.sorties[sortieName].timeStamps = newTimeStamps;
                 AsyncStorage.mergeItem(data.missionName + '-' + data.sessionName, JSON.stringify(result), () => {
                     this.setState(prevState => ({
                         gridVals: [...prevState.gridVals, gridVals]
@@ -106,12 +107,13 @@ export default class PreMissionScreen extends Component {
             let gridVals = this.state.gridVals;
             gridVals[lastPressed.x][lastPressed.y] -= 1;
             let data = this.state.data;
+            let sortieName = data.sortieName;
             AsyncStorage.getItem(data.missionName + '-' + data.sessionName, (err, result) => {
                 result = JSON.parse(result);
-                if (result && result.timeStamps) {
-                    let newTimeStamps = result.timeStamps.slice();
+                if (result && result.sorties[sortieName].timeStamps) {
+                    let newTimeStamps = result.sorties[sortieName].timeStamps.slice();
                     newTimeStamps.pop();
-                    result.timeStamps = newTimeStamps;
+                    result.sorties[sortieName].timeStamps = newTimeStamps;
                     AsyncStorage.mergeItem(data.missionName + '-' + data.sessionName, JSON.stringify(result), () => {
                         this.setState(prevState => ({
                             gridVals: [...prevState.gridVals, gridVals]
