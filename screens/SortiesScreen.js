@@ -14,7 +14,7 @@ export default class SortiesScreen extends Component {
         let data = this.props.navigation.state.params.missionData;
         let sortiesData = [];
         for (let property in data.sorties) {
-            console.log(property);
+            // console.log(property);
             let temp = {};
             temp["sortieName"] = property;
             temp["missionName"] = data.missionName;

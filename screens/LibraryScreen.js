@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import {Text, View, ActivityIndicator, ScrollView, StyleSheet, AsyncStorage, FlatList} from 'react-native';
+import { View, ActivityIndicator, ScrollView, StyleSheet, AsyncStorage, FlatList} from 'react-native';
 import { ListItem, List } from 'react-native-elements';
+import {getPrefillValue} from './../apis/helper';
 
 export default class LibraryScreen extends Component {
     static navigationOptions = {
@@ -24,7 +25,10 @@ export default class LibraryScreen extends Component {
     }
 
     _onRowClick(mission) {
-        this.props.navigation.navigate("Sorties", {missionData: mission});
+        if(this.props.navigation.state.params.flow === 'library')
+            this.props.navigation.navigate("Sorties", {missionData: mission});
+        else
+            this.props.navigation.navigate("Setup", {gridVals: this.props.navigation.state.params.gridVals, prefillData: getPrefillValue(mission)});
     }
 
     renderSeparator = () => {

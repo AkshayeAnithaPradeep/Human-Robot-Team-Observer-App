@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View, KeyboardAvoidingView } from 'react-native';
 import StickyFooter from './subviews/StickyFooter';
 import { AsyncStorage } from "react-native";
 import {getObject} from './../apis/helper';
@@ -69,7 +69,7 @@ export default class SetupScreen extends Component {
             let value_json = JSON.stringify(value_obj);
             AsyncStorage.mergeItem(value.missionName + '-' + value.sessionName, value_json, () => {
                 AsyncStorage.getItem(value.missionName + '-' + value.sessionName, (err, result) => {
-                    console.log(result);
+                    // console.log(result);
                 });
             });
             let gridVals = {
@@ -82,16 +82,17 @@ export default class SetupScreen extends Component {
     }
     render() {
         return (
-            <View style = {{flex: 1}}>
+            <KeyboardAvoidingView style = {{flex: 1}} behavior="padding" enabled>
                 <ScrollView style = {styles.formContainer}>
                     <Form
                         ref="form"
                         type={Session}
                         options={options}
+                        value={(this.navParams && this.navParams.prefillData) ? this.navParams.prefillData : {}}
                     />
                 </ScrollView>
                 <StickyFooter cancelFunc = {this._onCancelPressButton.bind(this)} proceedFunc = {this._onProceedPressButton.bind(this)}/>
-            </View>
+            </KeyboardAvoidingView>
         );
     }
 }

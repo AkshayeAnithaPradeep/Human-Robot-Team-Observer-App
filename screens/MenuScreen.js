@@ -28,13 +28,13 @@ export default class MenuScreen extends Component {
                 <View style={{padding: 5}}>
                     <Button
                         title="Resume Session"
-                        onPress={() => navigate('Setup', {gridVals: gridVals})}
+                        onPress={() => navigate('Library', {gridVals: gridVals, flow: 'resume'})}
                     />
                 </View>
                 <View style={{padding: 5}}>
                     <Button
                         title="Library of Sessions"
-                        onPress={() => navigate('Library')}
+                        onPress={() => navigate('Library', {flow: 'library'})}
                     />
                 </View>
             </View>

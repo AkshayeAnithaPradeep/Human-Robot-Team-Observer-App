@@ -21,3 +21,29 @@ export function getObject(value) {
     };
     return temp;
 }
+
+export function getPrefillValue(missionData) {
+    let temp = {
+        sessionName: missionData.sessionName,
+        sessionDescription: missionData.sessionDescription,
+        missionName: missionData.missionName,
+        missionDescription: missionData.missionDescription,
+        role_1: {},
+        role_2: {},
+        role_3: {},
+        role_4: {},
+        role_5: {}
+    };
+    let anySortieInfo = missionData.sorties[Object.keys(missionData.sorties)[0]];
+    for(let i = 1; i<=5; i++){
+        let varName = "role_" + i;
+        if (anySortieInfo[varName]) {
+            temp[varName]["name"] =anySortieInfo[varName].name;
+            temp[varName]["title"] =anySortieInfo[varName].title;
+            temp[varName]["abbreviation"] =anySortieInfo[varName].abbreviation;
+        }
+        else
+            temp[varName] = null;
+    }
+    return temp;
+}

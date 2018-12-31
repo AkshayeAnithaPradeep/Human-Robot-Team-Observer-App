@@ -20,8 +20,8 @@ export default class SummaryScreen extends Component {
         AsyncStorage.getItem(data.missionName + '-' + data.sessionName, (err, result) => {
             this.jsonStringData = result;
             result = JSON.parse(result);
-            console.log(result);
-            console.log(sortieName);
+            // console.log(result);
+            // console.log(sortieName);
             this.setState(previousState => ({
                     data: result,
                     sortieName: sortieName
