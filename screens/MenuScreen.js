@@ -3,7 +3,7 @@ import { Button, StyleSheet, View, AsyncStorage} from 'react-native';
 
 export default class MenuScreen extends Component {
     static navigationOptions = {
-        title: 'Menu',
+        title: 'Menu'
     };
 
     constructor(props) {

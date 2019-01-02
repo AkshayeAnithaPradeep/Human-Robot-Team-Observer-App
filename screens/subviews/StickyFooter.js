@@ -34,6 +34,7 @@ let styles = StyleSheet.create({
         flexDirection: 'row',
         shadowColor: '#888888',
         shadowOffset: { width: 10, height: 5 },
-        shadowRadius: 18
+        shadowRadius: 18,
+        backgroundColor: '#E4F3FC'
     }
 });

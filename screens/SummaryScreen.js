@@ -24,7 +24,8 @@ export default class SummaryScreen extends Component {
             // console.log(sortieName);
             this.setState(previousState => ({
                     data: result,
-                    sortieName: sortieName
+                    sortieName: sortieName,
+                    initDate: new Date(result.sorties[sortieName].timeStamps[0].timeStamp)
             }))
         });
     }
@@ -52,6 +53,12 @@ export default class SummaryScreen extends Component {
                 <View style = {{flex: 1}}>
                     <ScrollView style = {{flex: 1}}>
                         <View style={{flex: 1}}>
+                            <View style={{padding: 5}}>
+                                <Text>Session Name: {this.navParams.setupData.sessionName}</Text>
+                                <Text>Mission Name: {this.navParams.setupData.missionName}</Text>
+                                <Text>Flight: {this.state.sortieName}</Text>
+                                <Text>{this.state.initDate.toTimeString().slice(0,8) + ' ' + this.state.initDate.toDateString()}</Text>
+                            </View>
                             <View style={{flex: 1, flexDirection: 'row'}}>
                                 <TableCell id={0} flexVal={4}>Timestamp</TableCell>
                                 <TableCell id={1} flexVal={4}>Phase</TableCell>
@@ -63,29 +70,30 @@ export default class SummaryScreen extends Component {
                                 let timeStamp = timeStampObj.timeStamp;
                                 let time = new Date(timeStamp).toTimeString().slice(0,8);
                                 let roleKey = "role_" + (timeStampObj.role+1);
-                                return (
-                                    <View key={index} style={{flex: 1, flexDirection: 'row', height: 40}}>
-                                        <View style={styles.textContainer}>
-                                            <Text>
-                                                {time}
-                                            </Text>
+                                if(index !== 0)
+                                    return (
+                                        <View key={index} style={{flex: 1, flexDirection: 'row', height: 40}}>
+                                            <View style={styles.textContainer}>
+                                                <Text>
+                                                    {time}
+                                                </Text>
+                                            </View>
+                                            <View style={styles.textContainer}>
+                                                <Text>
+                                                    {timeStampObj.step}
+                                                </Text>
+                                            </View>
+                                            <View style={styles.textContainer}>
+                                                <Text>
+                                                    {rowVals[timeStampObj.event]}
+                                                </Text>
+                                            </View>
+                                            <View style={styles.textContainer}>
+                                                <Text>
+                                                    {this.state.data.sorties[this.state.sortieName][roleKey].title}
+                                                </Text>
+                                            </View>
                                         </View>
-                                        <View style={styles.textContainer}>
-                                            <Text>
-                                                {timeStampObj.step}
-                                            </Text>
-                                        </View>
-                                        <View style={styles.textContainer}>
-                                            <Text>
-                                                {rowVals[timeStampObj.event]}
-                                            </Text>
-                                        </View>
-                                        <View style={styles.textContainer}>
-                                            <Text>
-                                                {this.state.data.sorties[this.state.sortieName][roleKey].title}
-                                            </Text>
-                                        </View>
-                                    </View>
                                 );
                             })}
                         </View>

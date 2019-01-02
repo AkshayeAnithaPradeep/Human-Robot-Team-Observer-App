@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, View, KeyboardAvoidingView } from 'react-native';
+import {ScrollView, StyleSheet, View, KeyboardAvoidingView, ActivityIndicator} from 'react-native';
 import StickyFooter from './subviews/StickyFooter';
 import { AsyncStorage } from "react-native";
 import {getObject} from './../apis/helper';
@@ -14,6 +14,11 @@ let Role = t.struct({
    abbreviation: t.String
 });
 
+let Location = t.struct({
+    latitude: t.String,
+    longitude: t.String
+});
+
 let Session = t.struct({
     sessionName: t.String,       // a required string
     sessionDescription: t.maybe(t.String),
@@ -24,14 +29,17 @@ let Session = t.struct({
     role_2: t.maybe(Role),
     role_3: t.maybe(Role),
     role_4: t.maybe(Role),
-    role_5: t.maybe(Role)
+    role_5: t.maybe(Role),
+    location: t.maybe(Location)
 });
 
 
 const options = {
     fields: {
         sessionName: {
-            error: "Session Name cannot be empty"
+            error: "Session Name cannot be empty",
+            autoFocus: true,
+            selectTextOnFocus: true
         },
         missionName: {
             error: "Mission Name cannot be empty"
@@ -49,6 +57,17 @@ const options = {
         },
         sortieName: {
             error: "Sortie Name cannot be empty"
+        },
+        location: {
+            label: " ",
+            fields: {
+                latitude: {
+                    hidden: true
+                },
+                longitude: {
+                    hidden: true
+                }
+            }
         }
     }
 };
@@ -58,6 +77,46 @@ export default class SetupScreen extends Component {
         title: 'Setup',
     };
     navParams = this.props.navigation.state.params;
+
+
+    componentDidMount() {
+        if(this.navParams && this.navParams.prefillData) {
+            this.setState({
+                formVal: this.navParams.prefillData
+            });
+        }
+        else
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    const latitude = JSON.stringify(position.coords.latitude);
+                    const longitude = JSON.stringify(position.coords.longitude);
+                    console.log(latitude);
+                    let formVal = {
+                        sessionName: new Date().toLocaleDateString(),
+                        location: {
+                            latitude: latitude,
+                            longitude: longitude
+                        }
+                    };
+                    this.setState({
+                        formVal: formVal
+                    })
+                },
+                err => {
+                    let formVal = {
+                        sessionName: new Date().toLocaleDateString(),
+                        location: {
+                            latitude: 'not available',
+                            longitude: 'not available'
+                        }
+                    };
+                    this.setState({
+                        formVal: formVal
+                    })
+                },
+                {enableHighAccuracy: true, timeout: 6000, maximumAge: 1000}
+            );
+    }
 
     _onCancelPressButton() {
         this.props.navigation.navigate("Home");
@@ -77,23 +136,31 @@ export default class SetupScreen extends Component {
                 mission: [],
                 postmission: []
             };
+            console.log(value);
             this.props.navigation.navigate("PreMission", {setupData: value, gridVals: gridVals});
         }
     }
     render() {
-        return (
-            <KeyboardAvoidingView style = {{flex: 1}} behavior="padding" enabled>
-                <ScrollView style = {styles.formContainer}>
-                    <Form
-                        ref="form"
-                        type={Session}
-                        options={options}
-                        value={(this.navParams && this.navParams.prefillData) ? this.navParams.prefillData : {}}
-                    />
-                </ScrollView>
-                <StickyFooter cancelFunc = {this._onCancelPressButton.bind(this)} proceedFunc = {this._onProceedPressButton.bind(this)}/>
-            </KeyboardAvoidingView>
-        );
+        if(this.state && this.state.formVal)
+            return (
+                <KeyboardAvoidingView style = {{flex: 1}} behavior="padding" enabled>
+                    <ScrollView style = {styles.formContainer}>
+                        <Form
+                            ref="form"
+                            type={Session}
+                            options={options}
+                            value={this.state.formVal}
+                        />
+                    </ScrollView>
+                    <StickyFooter cancelFunc = {this._onCancelPressButton.bind(this)} proceedFunc = {this._onProceedPressButton.bind(this)}/>
+                </KeyboardAvoidingView>
+            );
+        else
+            return (
+                <View style={styles.container}>
+                    <ActivityIndicator size="large" color="#0000ff" />
+                </View>
+            )
     }
 }
 
@@ -101,6 +168,11 @@ let styles = StyleSheet.create({
     formContainer: {
         flex: .8, paddingLeft: 20,
         paddingRight: 20,
-        marginTop: 20
+        paddingTop: 25
+    },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
