@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {ScrollView, StyleSheet, View, KeyboardAvoidingView, ActivityIndicator} from 'react-native';
 import StickyFooter from './subviews/StickyFooter';
 import { AsyncStorage } from "react-native";
-import {getObject} from './../apis/helper';
+import {getObject, getPrefillValue, setupGridVals} from './../apis/helper';
 var t = require('tcomb-form-native');
 
 var Form = t.form.Form;
@@ -80,9 +80,23 @@ export default class SetupScreen extends Component {
 
 
     componentDidMount() {
-        if(this.navParams && this.navParams.prefillData) {
-            this.setState({
-                formVal: this.navParams.prefillData
+        if(this.navParams && this.navParams.setupData) {
+            let setupData = this.navParams.setupData;
+            AsyncStorage.getItem(setupData.missionName + '-' + setupData.sessionName, (err, result) => {
+                result = JSON.parse(result);
+                let formVal = getPrefillValue(result, setupData.sortieName, this.navParams.newFlight);
+                if(this.navParams.newFlight)
+                    this.setState({
+                        formVal: formVal
+                    });
+                else
+                    setupGridVals(result.sorties, setupData.sortieName).then(function (gridVals) {
+                        this.setState({
+                            formVal: formVal,
+                            gridVals: gridVals,
+                            timeStamps: result.sorties[setupData.sortieName].timeStamps
+                        })
+                    }.bind(this));
             });
         }
         else
@@ -124,20 +138,22 @@ export default class SetupScreen extends Component {
     _onProceedPressButton() {
         let value = this.refs.form.getValue();
         if (value) { // if validation fails, value will be null
-            let value_obj = getObject(value);
+            let value_obj = getObject(value, this.state && this.state.timeStamps? this.state.timeStamps : null);
             let value_json = JSON.stringify(value_obj);
             AsyncStorage.mergeItem(value.missionName + '-' + value.sessionName, value_json, () => {
                 AsyncStorage.getItem(value.missionName + '-' + value.sessionName, (err, result) => {
-                    // console.log(result);
                 });
             });
-            let gridVals = {
-                premission: [],
-                mission: [],
-                postmission: []
-            };
-            console.log(value);
-            this.props.navigation.navigate("PreMission", {setupData: value, gridVals: gridVals});
+            if(this.state.gridVals)
+                this.props.navigation.navigate("PreMission", {setupData: value, gridVals: this.state.gridVals});
+            else {
+                let gridVals = {
+                    premission: [],
+                    mission: [],
+                    postmission: []
+                };
+                this.props.navigation.navigate("PreMission", {setupData: value, gridVals: gridVals});
+            }
         }
     }
     render() {

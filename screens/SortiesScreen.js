@@ -26,11 +26,22 @@ export default class SortiesScreen extends Component {
             data: sortiesData
         };
         this._onRowClick = this._onRowClick.bind(this);
+        this._onNewFlightClick = this._onNewFlightClick.bind(this);
     }
 
 
     _onRowClick(mission) {
-        this.props.navigation.navigate("Summary", {setupData: mission});
+        if(this.props.navigation.state.params.flow === 'library')
+            this.props.navigation.navigate("Summary", {setupData: mission, flow: 'library'});
+        else {
+            this.props.navigation.navigate("Setup", {setupData: mission, newFlight: false});
+        }
+        //this.props.navigation.navigate("Summary", {setupData: mission});
+    }
+
+    _onNewFlightClick() {
+        let mission;
+        this.props.navigation.navigate("Setup", {setupData: this.state.data[0], newFlight: true});
     }
 
     renderSeparator = () => {
@@ -46,6 +57,18 @@ export default class SortiesScreen extends Component {
     };
 
     render() {
+        let addNew;
+        if(this.navParams.flow === 'resume' ) {
+            addNew = <ListItem
+                title={"New Flight"}
+                leftIcon={{name: 'add'}}
+                style={{borderStyle: 'solid', borderColor: '#CED0CE', borderWidth: 1}}
+                onPress={() => this._onNewFlightClick()}
+            />;
+        }
+        else {
+            addNew = <View/>;
+        }
         if(this.state && this.state.data) {
             return (
                 <ScrollView>
@@ -62,6 +85,7 @@ export default class SortiesScreen extends Component {
                         keyExtractor={item => item["missionName"] + item["sessionName"] + item["sortieName"]}
                         ItemSeparatorComponent={this.renderSeparator}
                     />
+                    {addNew}
                 </ScrollView>
             );
         }
