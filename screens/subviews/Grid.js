@@ -14,7 +14,7 @@ export default class Grid extends Component {
                             <TableCell id={0} flexVal={ this.props.colCount }>{rowVals[index]}</TableCell>
                             {Array.from(Array(this.props.colCount-1),(key2, index2) => {
                                 return (
-                                    <View key={index2} style={{flex: 1/this.props.colCount, borderStyle: 'solid', borderColor: '#000000', borderRadius: 1, borderWidth: 0.5}}>
+                                    <View key={index2} style={{flex: 1/this.props.colCount, borderStyle: 'solid', borderColor: '#CED0CE', borderRadius: 1, borderWidth: 0.5}}>
                                         <TouchableHighlight style={{height: 30 + 10*this.props.colCount, justifyContent: 'center', alignItems: 'center' }}
                                             onPress={() => this.props.gridCellPress(index, index2)}>
                                             <Text style={{fontSize: 20}}>

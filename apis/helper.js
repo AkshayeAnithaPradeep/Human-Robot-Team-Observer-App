@@ -1,3 +1,35 @@
+export function getDataByPhase(value, sortieName) {
+    let sortieInfo = value.sorties[sortieName];
+    let phases = {};
+    phases['premission'] = new Array(7).fill(0);
+    phases['mission'] = new Array(7).fill(0);
+    phases['postmission'] = new Array(7).fill(0);
+    sortieInfo.timeStamps.map((key, index) => {
+        let timeStampObj = sortieInfo.timeStamps[index];
+        if(timeStampObj.step !== 'setup')
+            phases[timeStampObj.step][timeStampObj.event] += 1;
+    });
+    return phases;
+}
+
+export function getDataByRole(value, sortieName) {
+    let sortieInfo = value.sorties[sortieName];
+    let roles = {};
+    for(let i = 1; i<=5; i++) {
+        let varName = "role_" + i;
+        if (sortieInfo[varName]) {
+            roles[varName] = new Array(7).fill(0);
+        }
+    }
+    sortieInfo.timeStamps.map((key, index) => {
+        let timeStampObj = sortieInfo.timeStamps[index];
+        let roleKey = "role_" + (timeStampObj.role + 1);
+        roles[roleKey][timeStampObj.event] += 1;
+    });
+    roles.role_1[0] -= 1;
+    return roles;
+}
+
 export function getObject(value, timeStamps) {
     let temp = {
         sessionName: value.sessionName,
@@ -26,7 +58,6 @@ export function getObject(value, timeStamps) {
 }
 
 export function getPrefillValue(missionData, sortieName, newFlight) {
-    console.log(newFlight);
     let temp = {
         sessionName: missionData.sessionName,
         sessionDescription: missionData.sessionDescription,
@@ -93,4 +124,27 @@ export function setupGridVals(sortieData, sortieName) {
         }
         resolve(gridVals);
     });
+}
+
+export function getSummaryDetails(value, sortieName) {
+    let temp = {
+        sessionName: value.sessionName,
+        sessionDescription: value.sessionDescription,
+        missionName: value.missionName,
+        missionDescription: value.missionDescription,
+        sortieName: sortieName,
+        roles: []
+    };
+    let sortieInfo = value.sorties[sortieName];
+    for(let i = 1; i<=5; i++){
+        let varName = "role_" + i;
+        if (sortieInfo[varName]) {
+            let temprole = {};
+            temprole["name"] = sortieInfo[varName].name;
+            temprole["title"] = sortieInfo[varName].title;
+            temprole["abbreviation"] = sortieInfo[varName].abbreviation;
+            temp.roles.push(temprole);
+        }
+    }
+    return temp;
 }

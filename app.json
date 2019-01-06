@@ -24,6 +24,8 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "",
+    "githubUrl": "https://github.com/AkshayeAnithaPradeep/Human-Robot-Team-Observer-App"
   }
 }
