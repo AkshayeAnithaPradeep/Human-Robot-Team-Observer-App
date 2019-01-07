@@ -48,6 +48,10 @@ export default class PostMissionScreen extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
             title: 'Post Mission',
+            headerStyle: {
+                backgroundColor: '#1e90ff',
+            },
+            headerTintColor: '#fff',
             headerRight: (
                 <View style={{paddingRight: 5}}>
                     <Icon
@@ -134,7 +138,7 @@ export default class PostMissionScreen extends Component {
                                 <TableCell id={0} flexVal={ this.state.colCount }>TITLE</TableCell>
                                 {Object.keys(this.state.data).map((key, index) => {
                                     {if(key.startsWith('role') && this.state.data[key] != null){
-                                        return <TableCell key = {index} id={ index } flexVal={ this.state.colCount }>{this.state.data[key]["title"]}</TableCell>
+                                        return <TableCell key = {index} id={ index } flexVal={ this.state.colCount }>{this.state.data[key]["name"]}</TableCell>
                                     }}
                                 })}
                             </View>

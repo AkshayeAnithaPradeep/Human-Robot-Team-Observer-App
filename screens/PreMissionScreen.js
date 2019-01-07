@@ -48,6 +48,10 @@ export default class PreMissionScreen extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
             title: 'Pre Mission',
+            headerStyle: {
+                backgroundColor: '#1e90ff',
+            },
+            headerTintColor: '#fff',
             headerRight: (
                 <View style={{paddingRight: 5}}>
                     <Icon
@@ -130,11 +134,11 @@ export default class PreMissionScreen extends Component {
                 <ScrollView style = {styles.formContainer}>
                     <View style={{flex: 1}}>
                         <View>
-                            <View style = {{flex: 1, flexDirection: 'row'}}>
+                            <View style = {{flex: 1, flexDirection: 'row', height: 50}}>
                                 <TableCell id={0} flexVal={ this.state.colCount }>TITLE</TableCell>
                                 {Object.keys(this.state.data).map((key, index) => {
                                     {if(key.startsWith('role') && this.state.data[key] != null){
-                                        return <TableCell key = {index} id={ index } flexVal={ this.state.colCount }>{this.state.data[key]["title"]}</TableCell>
+                                        return <TableCell key = {index} id={ index+1 } flexVal={ this.state.colCount }>{this.state.data[key]["name"]}</TableCell>
                                     }}
                                 })}
                             </View>
@@ -158,5 +162,7 @@ let styles = StyleSheet.create({
         paddingRight: 5
     }
 });
+
+const colors= ['#d3d3d3', '#fff'];
 
 

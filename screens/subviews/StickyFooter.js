@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button, StyleSheet, View} from 'react-native';
+import {Text, StyleSheet, View, TouchableHighlight} from 'react-native';
 
 export default class StickyFooter extends Component {
     constructor(props) {
@@ -13,10 +13,14 @@ export default class StickyFooter extends Component {
         return (
             <View style={styles.stickyFooter}>
                 <View style={styles.buttonContainer}>
-                    <Button title={this.state.backTitle} onPress={this.props.cancelFunc}/>
+                    <TouchableHighlight style={styles.button} onPress={this.props.cancelFunc}>
+                        <Text style={styles.buttonText}>{this.state.backTitle}</Text>
+                    </TouchableHighlight>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <Button title={this.state.proceedTitle} onPress={this.props.proceedFunc}/>
+                    <TouchableHighlight style={styles.button} onPress={this.props.proceedFunc}>
+                        <Text style={styles.buttonText}>{this.state.proceedTitle} </Text>
+                    </TouchableHighlight>
                 </View>
             </View>
         );
@@ -26,7 +30,7 @@ export default class StickyFooter extends Component {
 let styles = StyleSheet.create({
     buttonContainer: {
         flex:1,
-        padding: 5,
+        padding: 1,
         margin: 20
     },
     stickyFooter: {
@@ -34,7 +38,16 @@ let styles = StyleSheet.create({
         flexDirection: 'row',
         shadowColor: '#888888',
         shadowOffset: { width: 10, height: 5 },
-        shadowRadius: 18,
-        backgroundColor: '#E4F3FC'
+        shadowRadius: 18
+    },
+    button: {
+        alignItems: 'center',
+        backgroundColor: '#1e90ff',
+        padding: 10,
+        borderRadius: 5
+    },
+    buttonText: {
+        color: '#fff',
+        fontWeight: 'normal'
     }
 });

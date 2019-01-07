@@ -46,8 +46,8 @@ export default class SummaryStatistics extends Component {
                 dataByPhase: dataByPhase,
                 colCount: details.roles.length + 2,
                 colPhaseCount: 5,
-                roleGraph: false,
-                phaseGraph: false,
+                roleGraph: true,
+                phaseGraph: true,
                 initDate: new Date(result.sorties[sortieName].timeStamps[0].timeStamp)
             }))
         });
@@ -63,42 +63,42 @@ export default class SummaryStatistics extends Component {
                     let totalCount = new Array(this.state.colCount - 1).fill(0);
                 roleVal = <View style={{flex: 1, padding: 5}}>
                     <View style={{flex: 1, flexDirection: 'row'}}>
-                        <TableCell id={0} flexVal={this.state.colCount}>Event</TableCell>
+                        <TableCell id={0} flexVal={this.state.colCount - 1}>Event</TableCell>
                         {this.state.data.roles.map((key, index) => {
                             return (
                                 <TableCell id={0}
-                                           flexVal={this.state.colCount}>{this.state.data.roles[index].title}</TableCell>
+                                           flexVal={this.state.colCount - 1}>{this.state.data.roles[index].title}</TableCell>
                             );
                         })}
-                        <TableCell id={0} flexVal={this.state.colCount}>Total</TableCell>
+                        <TableCell id={0} flexVal={this.state.colCount - 1}>Total</TableCell>
                     </View>
                     {rowVals.map((key, index) => {
                         let sum = 0;
                         return (
                             <View style={{flex: 1, flexDirection: 'row'}}>
-                                <TableCell id={0} flexVal={this.state.colCount}>{rowVals[index]}</TableCell>
+                                <TableCell id={0} flexVal={this.state.colCount - 1}>{rowVals[index]}</TableCell>
                                 {this.state.data.roles.map((key1, index1) => {
                                     let varName = "role_" + (index1 + 1);
                                     sum += this.state.dataByRole[varName][index];
                                     totalCount[index1] += this.state.dataByRole[varName][index];
                                     return (
-                                        <TableCell id={index1}
-                                                   flexVal={this.state.colCount}>{this.state.dataByRole[varName][index]}</TableCell>
+                                        <TableCell id={index1*2}
+                                                   flexVal={this.state.colCount - 1}>{this.state.dataByRole[varName][index]}</TableCell>
                                     );
                                 })}
-                                <TableCell id={0} flexVal={this.state.colCount}>{sum}</TableCell>
+                                <TableCell id={0} flexVal={this.state.colCount - 1}>{sum}</TableCell>
                             </View>
                         )
                     })}
                     <View style={{flex: 1, flexDirection: 'row'}}>
-                        <TableCell id={0} flexVal={this.state.colCount}>Total</TableCell>
+                        <TableCell id={0} flexVal={this.state.colCount - 1}>Total</TableCell>
                         {this.state.data.roles.map((key, index) => {
                             return (
                                 <TableCell id={0}
-                                           flexVal={this.state.colCount}>{totalCount[index]}</TableCell>
+                                           flexVal={this.state.colCount - 1}>{totalCount[index]}</TableCell>
                             );
                         })}
-                        <TableCell id={0} flexVal={this.state.colCount}>{totalCount.reduce((a, b) => a + b, 0)}</TableCell>
+                        <TableCell id={0} flexVal={this.state.colCount - 1}>{totalCount.reduce((a, b) => a + b, 0)}</TableCell>
                     </View>
                 </View>
             }
@@ -125,7 +125,7 @@ export default class SummaryStatistics extends Component {
                                     sum += this.state.dataByPhase[phases[index1]][index];
                                     totalCount[index1] += this.state.dataByPhase[phases[index1]][index];
                                     return (
-                                        <TableCell id={index1}
+                                        <TableCell id={index1*2}
                                                    flexVal={this.state.colPhaseCount}>{this.state.dataByPhase[phases[index1]][index]}</TableCell>
                                     );
                                 })}

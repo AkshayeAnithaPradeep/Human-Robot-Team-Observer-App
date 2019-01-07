@@ -36,11 +36,11 @@ export default class SummaryTable extends Component {
             return (
                 <ScrollView style={{flex: 1}}>
                     <View style={{flex: 1}}>
-                        <View style={{flex: 1, flexDirection: 'row'}}>
+                        <View style={{flex: 1, flexDirection: 'row', height: 35}}>
                             <TableCell id={0} flexVal={4}>Timestamp</TableCell>
-                            <TableCell id={1} flexVal={4}>Phase</TableCell>
-                            <TableCell id={2} flexVal={4}>Event</TableCell>
-                            <TableCell id={3} flexVal={4}>Role</TableCell>
+                            <TableCell id={0} flexVal={4}>Phase</TableCell>
+                            <TableCell id={0} flexVal={4}>Event</TableCell>
+                            <TableCell id={0} flexVal={4}>Name</TableCell>
                         </View>
                         {this.state.data.sorties[this.state.sortieName].timeStamps.map((key, index) => {
                             let timeStampObj = this.state.data.sorties[this.state.sortieName].timeStamps[index];
@@ -67,7 +67,7 @@ export default class SummaryTable extends Component {
                                         </View>
                                         <View style={styles.textContainer}>
                                             <Text>
-                                                {this.state.data.sorties[this.state.sortieName][roleKey].title}
+                                                {this.state.data.sorties[this.state.sortieName][roleKey].name}
                                             </Text>
                                         </View>
                                     </View>

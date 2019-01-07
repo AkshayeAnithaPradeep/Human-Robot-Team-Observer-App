@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-import { Button, StyleSheet, View, AsyncStorage} from 'react-native';
+import { Button, StyleSheet, View, TouchableHighlight, Text} from 'react-native';
 
 export default class MenuScreen extends Component {
     static navigationOptions = {
-        title: 'Menu'
+        title: 'Menu',
+        headerStyle: {
+            backgroundColor: '#1e90ff',
+        },
+        headerTintColor: '#fff'
     };
 
     constructor(props) {
@@ -15,24 +19,43 @@ export default class MenuScreen extends Component {
         return (
             <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', padding: 10}}>
                 <View style={{padding: 5}}>
-                    <Button
-                        title="Start Session"
+                    <TouchableHighlight
+                        style={styles.button}
                         onPress={() => navigate('Setup')}
-                    />
+                    >
+                        <Text style={styles.buttonText}> Start Session </Text>
+                    </TouchableHighlight>
                 </View>
                 <View style={{padding: 5}}>
-                    <Button
-                        title="Resume Session"
+                    <TouchableHighlight
+                        style={styles.button}
                         onPress={() => navigate('Library', {flow: 'resume'})}
-                    />
+                    >
+                        <Text style={styles.buttonText}> Resume Session </Text>
+                    </TouchableHighlight>
                 </View>
                 <View style={{padding: 5}}>
-                    <Button
-                        title="Library of Sessions"
+                    <TouchableHighlight
+                        style={styles.button}
                         onPress={() => navigate('Library', {flow: 'library'})}
-                    />
+                    >
+                        <Text style={styles.buttonText}> Library of Sessions </Text>
+                    </TouchableHighlight>
                 </View>
             </View>
         );
     }
 }
+
+let styles=StyleSheet.create({
+    button: {
+        alignItems: 'center',
+        backgroundColor: '#1e90ff',
+        padding: 10,
+        borderRadius: 5
+    },
+    buttonText: {
+        color: '#fff',
+        fontWeight: '500'
+    }
+});

@@ -75,6 +75,10 @@ const options = {
 export default class SetupScreen extends Component {
     static navigationOptions = {
         title: 'Setup',
+        headerStyle: {
+            backgroundColor: '#1e90ff',
+        },
+        headerTintColor: '#fff'
     };
     navParams = this.props.navigation.state.params;
 

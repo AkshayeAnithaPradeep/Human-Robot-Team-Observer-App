@@ -5,6 +5,10 @@ import { ListItem, List } from 'react-native-elements';
 export default class SortiesScreen extends Component {
     static navigationOptions = {
         title: 'Library',
+        headerStyle: {
+            backgroundColor: '#1e90ff',
+        },
+        headerTintColor: '#fff'
     };
 
     navParams = this.props.navigation.state.params;

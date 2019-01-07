@@ -12,12 +12,16 @@ export default class SummaryScreen extends React.Component {
         routes: [
             { key: 'first', title: 'Details' },
             { key: 'second', title: 'Timestamps' },
-            {key: 'third', title: 'Statistics'}
+            { key: 'third', title: 'Statistics'}
         ],
     };
 
     static navigationOptions = {
         title: 'Summary',
+        headerStyle: {
+            backgroundColor: '#1e90ff',
+        },
+        headerTintColor: '#fff'
     };
 
     _onCancelPressButton() {
