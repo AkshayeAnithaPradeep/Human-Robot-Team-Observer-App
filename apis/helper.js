@@ -43,7 +43,11 @@ export function getObject(value, timeStamps) {
         role_2: value.role_2,
         role_3: value.role_3,
         role_4: value.role_4,
-        role_5: value.role_5
+        role_5: value.role_5,
+        location: {
+            longitude: value.location.longitude,
+            latitude: value.location.latitude
+        }
     };
     if(timeStamps)
         temp.sorties[value.sortieName]['timeStamps'] = timeStamps;
@@ -70,6 +74,9 @@ export function getPrefillValue(missionData, sortieName, newFlight) {
         role_4: {},
         role_5: {}
     };
+    if(!newFlight){
+        temp["location"] = missionData.sorties[sortieName].location;
+    }
     let sortieInfo = !newFlight ? missionData.sorties[sortieName] : missionData.sorties[Object.keys(missionData.sorties)[0]];
     for(let i = 1; i<=5; i++){
         let varName = "role_" + i;
@@ -133,7 +140,8 @@ export function getSummaryDetails(value, sortieName) {
         missionName: value.missionName,
         missionDescription: value.missionDescription,
         sortieName: sortieName,
-        roles: []
+        roles: [],
+        location: convertDMS(parseFloat(value.sorties[sortieName].location.latitude), parseFloat(value.sorties[sortieName].location.longitude))
     };
     let sortieInfo = value.sorties[sortieName];
     for(let i = 1; i<=5; i++){
@@ -147,4 +155,28 @@ export function getSummaryDetails(value, sortieName) {
         }
     }
     return temp;
+}
+
+function toDegreesMinutesAndSeconds(coordinate) {
+    let absolute = Math.abs(coordinate);
+    let degrees = Math.floor(absolute);
+    let minutesNotTruncated = (absolute - degrees) * 60;
+    let minutes = Math.floor(minutesNotTruncated);
+    let seconds = Math.floor((minutesNotTruncated - minutes) * 60);
+
+    return degrees + "\xB0 " + minutes + "\' " + seconds + "\" ";
+}
+
+export function convertDMS(lat, lng) {
+    if(!lat)
+        return 'Location not available';
+    else {
+        let latitude = toDegreesMinutesAndSeconds(lat);
+        let latitudeCardinal = Math.sign(lat) >= 0 ? "N" : "S";
+
+        let longitude = toDegreesMinutesAndSeconds(lng);
+        let longitudeCardinal = Math.sign(lng) >= 0 ? "E" : "W";
+
+        return latitude + " " + latitudeCardinal + "  " + longitude + " " + longitudeCardinal;
+    }
 }

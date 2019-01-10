@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, StyleSheet, View, TouchableHighlight, Text} from 'react-native';
+import { Button, StyleSheet, View, TouchableHighlight, Text, AsyncStorage} from 'react-native';
 
 export default class MenuScreen extends Component {
     static navigationOptions = {

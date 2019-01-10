@@ -102,7 +102,7 @@ export default class PostMissionScreen extends Component {
         this.props.navigation.navigate("MissionExecution");
     }
     _onProceedPressButton() {
-        this.props.navigation.navigate("Summary", {setupData: this.navParams.setupData});
+        this.props.navigation.navigate("Summary", {setupData: this.navParams.setupData, flow: 'new'});
     }
 
     _onUndoPressButton() {
@@ -134,11 +134,11 @@ export default class PostMissionScreen extends Component {
                 <ScrollView style = {styles.formContainer}>
                     <View style={{flex: 1}}>
                         <View>
-                            <View style = {{flex: 1, flexDirection: 'row'}}>
+                            <View style = {{flex: 1, flexDirection: 'row', height: 50}}>
                                 <TableCell id={0} flexVal={ this.state.colCount }>TITLE</TableCell>
                                 {Object.keys(this.state.data).map((key, index) => {
                                     {if(key.startsWith('role') && this.state.data[key] != null){
-                                        return <TableCell key = {index} id={ index } flexVal={ this.state.colCount }>{this.state.data[key]["name"]}</TableCell>
+                                        return <TableCell key = {index} id={ index + 1 } flexVal={ this.state.colCount }>{this.state.data[key]["name"]}</TableCell>
                                     }}
                                 })}
                             </View>

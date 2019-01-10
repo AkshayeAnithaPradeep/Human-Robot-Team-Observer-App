@@ -30,7 +30,7 @@ let Session = t.struct({
     role_3: t.maybe(Role),
     role_4: t.maybe(Role),
     role_5: t.maybe(Role),
-    location: t.maybe(Location)
+    location: Location
 });
 
 
@@ -89,10 +89,31 @@ export default class SetupScreen extends Component {
             AsyncStorage.getItem(setupData.missionName + '-' + setupData.sessionName, (err, result) => {
                 result = JSON.parse(result);
                 let formVal = getPrefillValue(result, setupData.sortieName, this.navParams.newFlight);
-                if(this.navParams.newFlight)
-                    this.setState({
-                        formVal: formVal
-                    });
+                if(this.navParams.newFlight) {
+                    navigator.geolocation.getCurrentPosition(
+                        position => {
+                            const latitude = JSON.stringify(position.coords.latitude);
+                            const longitude = JSON.stringify(position.coords.longitude);
+                            formVal["location"] = {
+                                latitude: latitude,
+                                longitude: longitude
+                            };
+                            this.setState({
+                                formVal: formVal
+                            })
+                        },
+                        err => {
+                            formVal["location"] = {
+                                latitude: 'not available',
+                                longitude: 'not available'
+                            };
+                            this.setState({
+                                formVal: formVal
+                            })
+                        },
+                        {enableHighAccuracy: true, timeout: 6000, maximumAge: 1000}
+                    );
+                }
                 else
                     setupGridVals(result.sorties, setupData.sortieName).then(function (gridVals) {
                         this.setState({
@@ -108,7 +129,6 @@ export default class SetupScreen extends Component {
                 position => {
                     const latitude = JSON.stringify(position.coords.latitude);
                     const longitude = JSON.stringify(position.coords.longitude);
-                    console.log(latitude);
                     let formVal = {
                         sessionName: new Date().toLocaleDateString(),
                         location: {

@@ -16,6 +16,9 @@ export default class SummaryScreen extends React.Component {
         ],
     };
 
+    navParams = this.props.navigation.state.params;
+    jsonStringData = null;
+
     static navigationOptions = {
         title: 'Summary',
         headerStyle: {
@@ -24,10 +27,14 @@ export default class SummaryScreen extends React.Component {
         headerTintColor: '#fff'
     };
 
+    _setJsonString(data) {
+        this.jsonStringData = data;
+    }
+
     _onCancelPressButton() {
         Share.share({
             message: this.jsonStringData,
-            title: this.state.data.missionName + '-' + this.state.data.sessionName + ' Result'
+            title: this.navParams.setupData.missionName + '-' + this.navParams.setupData.sessionName + ' Result'
         }, {
             // Android only:
             dialogTitle: 'Share Mission Result'
@@ -38,7 +45,7 @@ export default class SummaryScreen extends React.Component {
     }
 
     render() {
-        let navParams = this.props.navigation.state.params;
+        let footerButtonText = this.navParams.flow === 'library'? "Main Menu" : "End Mission";
         return (
             <View style = {{flex: 1}}>
                 <TabView
@@ -46,11 +53,11 @@ export default class SummaryScreen extends React.Component {
                     renderScene = {({ route }) => {
                             switch (route.key) {
                             case 'first':
-                                return <SummaryDetails setupData = {navParams.setupData} navigation = {this.props.navigation}/>;
+                                return <SummaryDetails setupData = {this.navParams.setupData} navigation = {this.props.navigation} setJsonStringData = {this._setJsonString.bind(this)}/>;
                             case 'second':
-                                return <SummaryTable setupData = {navParams.setupData} navigation = {this.props.navigation}/>;
+                                return <SummaryTable setupData = {this.navParams.setupData} navigation = {this.props.navigation}/>;
                             case 'third':
-                                return <SummaryStatistics setupData = {navParams.setupData} navigation = {this.props.navigation}/>;
+                                return <SummaryStatistics setupData = {this.navParams.setupData} navigation = {this.props.navigation}/>;
                             default:
                             return null;
                         }
@@ -58,7 +65,7 @@ export default class SummaryScreen extends React.Component {
                     onIndexChange={index => this.setState({ index })}
                     initialLayout={{ width: Dimensions.get('window').width }}
                 />
-                <StickyFooter cancelFunc = {this._onCancelPressButton.bind(this)} proceedFunc = {this._onProceedPressButton.bind(this)} backVal={"Share Results"} proceedVal={"End Mission"}/>
+                <StickyFooter cancelFunc = {this._onCancelPressButton.bind(this)} proceedFunc = {this._onProceedPressButton.bind(this)} backVal={"Share Results"} proceedVal={footerButtonText}/>
             </View>
         );
     }

@@ -14,7 +14,7 @@ export default class SummaryTable extends Component {
         let data = this.props.setupData;
         let sortieName = data.sortieName;
         AsyncStorage.getItem(data.missionName + '-' + data.sessionName, (err, result) => {
-            this.jsonStringData = result;
+            this.props.setJsonStringData(result);
             result = JSON.parse(result);
             let details = getSummaryDetails(result, sortieName);
             this.setState(previousState => ({
@@ -34,6 +34,7 @@ export default class SummaryTable extends Component {
                         <Text style={styles.keyText}>Mission Name: <Text style={{fontWeight: 'normal'}}>{this.state.data.missionName}</Text></Text>
                         <Text style={styles.keyText}>Mission Description: <Text style={{fontWeight: 'normal'}}>{this.state.data.missionDescription}</Text></Text>
                         <Text style={styles.keyText}>Flight: <Text style={{fontWeight: 'normal'}}>{this.state.data.sortieName}</Text></Text>
+                        <Text style={styles.keyText}>Location: <Text style={{fontWeight: 'normal'}}>{this.state.data.location}</Text></Text>
                         <Text style={styles.keyText}>Started on {this.state.initDate.toTimeString().slice(0, 8) + ' ' + this.state.initDate.toDateString()}</Text>
                         {this.state.data.roles.map((key, index) => {
                             return (

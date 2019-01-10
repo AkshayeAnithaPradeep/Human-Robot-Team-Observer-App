@@ -7,8 +7,6 @@ const rowVals = ['distracted', 'slips', 'mistakes', 'confused/hesitant', 'asked 
 
 export default class SummaryTable extends Component {
 
-    jsonStringData = null;
-
     constructor(props) {
         super(props);
     }
@@ -17,7 +15,6 @@ export default class SummaryTable extends Component {
         let data = this.props.setupData;
         let sortieName = data.sortieName;
         AsyncStorage.getItem(data.missionName + '-' + data.sessionName, (err, result) => {
-            this.jsonStringData = result;
             result = JSON.parse(result);
             this.setState(previousState => ({
                 data: result,

@@ -22,7 +22,6 @@ export default class RoleGraph extends Component {
             }
             data.push(temp)
         }
-        console.log(this.props.data);
         keys = [...keys];
 
         const colors = [ '#fc3d39', '#53d769',  '#147efb', '#fd9426', '#5fc9f8' ];
