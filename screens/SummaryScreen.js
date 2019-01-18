@@ -6,6 +6,8 @@ import SummaryDetails from './subviews/SummaryDetails';
 import StickyFooter from "./subviews/StickyFooter";
 import SummaryStatistics from "./subviews/SummaryStatistics";
 
+let converter = require('json-2-csv');
+
 export default class SummaryScreen extends React.Component {
     state = {
         index: 0,
@@ -17,7 +19,8 @@ export default class SummaryScreen extends React.Component {
     };
 
     navParams = this.props.navigation.state.params;
-    jsonStringData = null;
+    csvStringData = null;
+
 
     static navigationOptions = {
         title: 'Summary',
@@ -28,12 +31,15 @@ export default class SummaryScreen extends React.Component {
     };
 
     _setJsonString(data) {
-        this.jsonStringData = data;
+        converter.json2csv(JSON.parse(data), (err, csv) => {
+            this.csvStringData = csv;
+            console.log(this.csvStringData);
+        });
     }
 
     _onCancelPressButton() {
         Share.share({
-            message: this.jsonStringData,
+            message: this.csvStringData,
             title: this.navParams.setupData.missionName + '-' + this.navParams.setupData.sessionName + ' Result'
         }, {
             // Android only:

@@ -4,8 +4,6 @@ import {getSummaryDetails} from './../../apis/helper';
 
 export default class SummaryTable extends Component {
 
-    jsonStringData = null;
-
     constructor(props) {
         super(props);
     }
