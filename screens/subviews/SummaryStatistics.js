@@ -151,7 +151,7 @@ export default class SummaryStatistics extends Component {
             return (
                 <ScrollView style={{flex: 1}}>
                     <View style={{flex: 1, flexDirection: 'row'}}>
-                        <Text style={styles.keyText}>By Role</Text>
+                        <Text style={styles.keyText}>By Role (All Phases)</Text>
                         <Text style={styles.linkText} onPress={this._onRoleLinkPress}>
                             {this.state.roleGraph ? "View Data" : "View Graph"}
                         </Text>

@@ -138,7 +138,7 @@ export default class PostMissionScreen extends Component {
                                 <TableCell id={0} flexVal={ this.state.colCount }>TITLE</TableCell>
                                 {Object.keys(this.state.data).map((key, index) => {
                                     {if(key.startsWith('role') && this.state.data[key] != null){
-                                        return <TableCell key = {index} id={ index + 1 } flexVal={ this.state.colCount }>{this.state.data[key]["name"]}</TableCell>
+                                        return <TableCell key = {index} id={ index + 1 } flexVal={ this.state.colCount }>{this.state.data[key]["name"] + " - " + this.state.data[key]["abbreviation"]}</TableCell>
                                     }}
                                 })}
                             </View>

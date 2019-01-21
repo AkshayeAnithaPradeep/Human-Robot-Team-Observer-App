@@ -19,6 +19,8 @@ const RootStack = createStackNavigator({
     Sorties: {screen: SortiesScreen}
 });
 
+console.disableYellowBox = true;
+
 const App = createAppContainer(RootStack);
 
 export default App;

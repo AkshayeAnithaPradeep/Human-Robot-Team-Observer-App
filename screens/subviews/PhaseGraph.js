@@ -23,7 +23,7 @@ export default class PhaseGraph extends Component {
         }
         keys = [...keys];
 
-        const colors = [ '#fc3d39', '#53d769',  '#147efb', '#fd9426', '#5fc9f8' ];
+        const colors = [ '#fecb2e', '#7d3f98',  '#2c9f45'];
 
         return (
             <View style={{padding: 5}}>
