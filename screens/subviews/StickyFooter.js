@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import {Text, StyleSheet, View, TouchableHighlight} from 'react-native';
+import {Text, StyleSheet, View, TouchableHighlight, Dimensions} from 'react-native';
+
+var {height, width} = Dimensions.get('window');
 
 export default class StickyFooter extends Component {
     constructor(props) {
@@ -34,9 +36,9 @@ let styles = StyleSheet.create({
         margin: 20
     },
     stickyFooter: {
-        flex: .15,
+        flex: (25 - height/100) * 0.01,
         flexDirection: 'row',
-        shadowColor: '#888888',
+        shadowColor: '#000',
         shadowOffset: { width: 10, height: 5 },
         shadowRadius: 18
     },

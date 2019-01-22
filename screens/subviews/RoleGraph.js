@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, Dimensions} from 'react-native';
 import { StackedBarChart, XAxis, Grid } from 'react-native-svg-charts';
 
 const rowVals = ['distracted', 'slips', 'mistakes', 'confused', 'asked questions', 'bugs', 'ergonomics'];
+
+var {height, width} = Dimensions.get('window');
 
 export default class RoleGraph extends Component {
 
@@ -45,7 +47,7 @@ export default class RoleGraph extends Component {
                         data={ rowVals }
                         formatLabel={ (value, index) => rowVals[index] }
                         contentInset={{ left: 25, right: 30 }}
-                        svg={{ fontSize: 10, fill: 'black' }}
+                        svg={{ fontSize: 3 + width/100, fill: 'black' }}
                     />
                 </View>
                 <View style={{flex:1, flexDirection: 'row', justifyContent: 'center'}}>

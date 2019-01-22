@@ -8,6 +8,8 @@ import SummaryStatistics from "./subviews/SummaryStatistics";
 
 let converter = require('json-2-csv');
 
+var {height, width} = Dimensions.get('window');
+
 export default class SummaryScreen extends React.Component {
     state = {
         index: 0,
@@ -33,7 +35,6 @@ export default class SummaryScreen extends React.Component {
     _setJsonString(data) {
         converter.json2csv(JSON.parse(data), (err, csv) => {
             this.csvStringData = csv;
-            console.log(this.csvStringData);
         });
     }
 
@@ -70,6 +71,13 @@ export default class SummaryScreen extends React.Component {
                     }}
                     onIndexChange={index => this.setState({ index })}
                     initialLayout={{ width: Dimensions.get('window').width }}
+                    renderTabBar={props =>
+                        <TabBar
+                            {...props}
+                            labelStyle={{fontSize: 8 + (width / 100)}}
+                            indicatorStyle={{ backgroundColor: 'pink' }}
+                        />
+                    }
                 />
                 <StickyFooter cancelFunc = {this._onCancelPressButton.bind(this)} proceedFunc = {this._onProceedPressButton.bind(this)} backVal={"Share Results"} proceedVal={footerButtonText}/>
             </View>
