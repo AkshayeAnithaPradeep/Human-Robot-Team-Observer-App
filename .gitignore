@@ -1,6 +1,5 @@
 node_modules/**/*
 .expo/*
-ios/Pods/*git statu
 npm-debug.*
 *.jks
 *.p12
